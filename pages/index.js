@@ -1,4 +1,7 @@
 import Head from 'next/head'
+import Sidebar from '../components/Sidebar'
+import MiddleBar from '../components/MiddleBar'
+import ChatScreen from '../components/ChatScreen'
 
 export default function Home() {
     return (
@@ -12,7 +15,11 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <h1 className="text-blue-500">Discord Clone</h1>
+            <div className="flex">
+                <Sidebar />
+                <MiddleBar />
+                <ChatScreen />
+            </div>
         </div>
     )
 }

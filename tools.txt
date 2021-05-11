@@ -1,0 +1,8 @@
+collections:
+servers
+text-channels
+text-channels -> users
+text-channels -> messages
+chats
+chats -> messages
+users

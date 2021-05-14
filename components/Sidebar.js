@@ -13,6 +13,7 @@ const Sidebar = () => {
             <div className="border-b border-gray-700 pb-4 flex items-center">
                 <div className="bg-white w-1.5 h-8 rounded-lg absolute left-0" />
                 <Avatar
+                    onClick={() => auth.signOut()}
                     className="cursor-pointer"
                     src={user ? user.photoURL : '/discord-avatar.jpg'}
                 />

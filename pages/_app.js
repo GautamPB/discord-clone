@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import '../styles/globals.css'
 import 'tailwindcss/tailwind.css'
-import firebase from 'firebase'
+import { Provider } from 'react-redux'
 import { db, auth } from '../firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Loading from '../components/Loading'
 import Login from './login'
+import { store } from '../app/store'
 
 function MyApp({ Component, pageProps }) {
     const [user, loading] = useAuthState(auth)
@@ -29,7 +30,11 @@ function MyApp({ Component, pageProps }) {
         return <Login />
     }
 
-    return <Component {...pageProps} />
+    return (
+        <Provider store={store}>
+            <Component {...pageProps} />
+        </Provider>
+    )
 }
 
 export default MyApp

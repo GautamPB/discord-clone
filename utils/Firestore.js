@@ -1,6 +1,7 @@
 import { db } from '../firebase'
 import { addDoc, collection } from 'firebase/firestore'
 
+// SERVERS
 const createServer = async (serverName, photoURL) => {
     await db
         .collection('servers')

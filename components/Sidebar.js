@@ -7,6 +7,8 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { useState } from 'react'
 import Modal from 'react-modal'
 import { createServer } from '../utils/Firestore'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../slices/userSlice'
 
 const style = {
     content: {
@@ -29,10 +31,19 @@ const Sidebar = () => {
     const [serverName, setServerName] = useState('')
     const [serverPhoto, setServerPhoto] = useState('')
 
+    const currentUser = useSelector(selectUser)
+
     const handleCreateServer = (e) => {
         e.preventDefault()
+        console.log(currentUser[0])
         const createNewServer = async () => {
-            await createServer(serverName, serverPhoto)
+            await createServer(
+                serverName,
+                serverPhoto,
+                currentUser[0].id,
+                currentUser[0].name,
+                currentUser[0].email
+            )
         }
         createNewServer()
         setOpenModal(false)
@@ -85,6 +96,7 @@ const Sidebar = () => {
                         className="flex flex-col space-y-3"
                     >
                         <input
+                            autoFocus
                             placeholder="Server Name"
                             className="bg-[#33363C] text-lg px-3 py-2 font-semibold rounded-lg text-white"
                             type="text"

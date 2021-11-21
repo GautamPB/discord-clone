@@ -2,12 +2,22 @@ import { db } from '../firebase'
 import { addDoc, collection } from 'firebase/firestore'
 
 //------------------------SERVERS--------------------------------
-const createServer = async (serverName, photoURL) => {
+const createServer = async (
+    serverName,
+    photoURL,
+    ownerId,
+    ownerName,
+    ownerEmail
+) => {
     await db
         .collection('servers')
         .add({
             serverName,
             photoURL,
+            ownerId,
+            ownerName,
+            ownerEmail,
+            members: [ownerId],
         })
         .then((serverRef) => {
             db.collection('servers')

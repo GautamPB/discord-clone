@@ -17,6 +17,7 @@ function MyApp({ Component, pageProps }) {
                 {
                     email: user.email,
                     photoURL: user.photoURL,
+                    name: user.displayName,
                 },
                 { merge: true }
             )

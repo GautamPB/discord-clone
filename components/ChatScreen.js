@@ -1,9 +1,9 @@
 const ChatScreen = () => {
     return (
-        <div className="bg-[#36393F] w-full text-white px-2 h-screen">
+        <div className="bg-[#36393F] w-full text-white px-2 h-full">
             <h1 className="shadow px-2 py-4 z-50">Chat Screen</h1>
 
-            <div className="w-full overflow-y-scroll z-0 h-[88%] relative">
+            <div className="w-full overflow-y-scroll z-0 h-[88%]">
                 <h1>Message Tab</h1>
             </div>
 

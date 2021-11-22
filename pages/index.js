@@ -8,6 +8,7 @@ import { auth } from '../firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDispatch } from 'react-redux'
 import { initializeUser } from '../slices/userSlice'
+import { initializeServers } from '../slices/serverSlice'
 import { getCurrentUser, getServers } from '../utils/Firestore'
 
 export default function Home() {
@@ -17,6 +18,9 @@ export default function Home() {
     useEffect(() => {
         getCurrentUser(user.email).then((userData) => {
             dispatch(initializeUser(userData))
+            getServers(userData.id).then((serverData) => {
+                dispatch(initializeServers(...serverData))
+            })
         })
     }, [user])
 
@@ -32,7 +36,7 @@ export default function Home() {
             </Head>
 
             {user ? (
-                <div className="flex">
+                <div className="flex h-[100vh]">
                     <Sidebar />
                     <MiddleBar />
                     <ChatScreen />

@@ -8,7 +8,7 @@ export const dmSlice = createSlice({
     name: 'dms',
     initialState,
     reducers: {
-        setDms: (state, action) => {
+        initializeDms: (state, action) => {
             state.dms = [...state.dms, action.payload]
         },
     },

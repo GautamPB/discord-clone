@@ -29,6 +29,10 @@ const createServer = async (
         })
 }
 
+const getServers = async (userId) => {
+    console.log('Get the servers of ' + userId)
+}
+
 //------------------------USERS--------------------------------
 const getCurrentUser = async (email) => {
     const userSnapshot = await db
@@ -46,4 +50,4 @@ const getCurrentUser = async (email) => {
     return doc[0]
 }
 
-export { createServer, getCurrentUser }
+export { createServer, getCurrentUser, getServers }

@@ -42,8 +42,8 @@ const MiddleBar = () => {
     }
 
     return (
-        <div className="bg-[#33363C] w-[300px] p-4 hidden lg:inline-block items-center space-y-3">
-            <div className="space-y-3">
+        <div className="bg-[#33363C] w-[300px] py-4 hidden lg:inline-block items-center space-y-3">
+            <div className="space-y-3 px-4">
                 <form>
                     <input
                         value={email}
@@ -63,7 +63,7 @@ const MiddleBar = () => {
                 </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="px-2">
                 <MiddleComponent
                     image="https://cdn.britannica.com/54/188754-050-A3613741/Elon-Musk-2010.jpg"
                     title="Gautam PB"

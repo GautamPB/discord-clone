@@ -8,7 +8,7 @@ import { auth } from '../firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDispatch } from 'react-redux'
 import { initializeUser } from '../slices/userSlice'
-import { getCurrentUser } from '../utils/Firestore'
+import { getCurrentUser, getServers } from '../utils/Firestore'
 
 export default function Home() {
     const [user] = useAuthState(auth)

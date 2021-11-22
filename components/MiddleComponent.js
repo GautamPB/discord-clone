@@ -4,7 +4,7 @@ import getChats from '../utils/getChats'
 
 const MiddleComponent = ({ id, users }) => {
     return (
-        <div className="flex items-center space-x-2 group">
+        <div className="flex items-center space-x-2 group hover:bg-[#36393F] cursor-pointer px-4 py-2 rounded-lg">
             {/* <Avatar src={image} alt={title} /> */}
             <Avatar />
             <p className="text-gray-400 group-hover:text-white cursor-pointer">

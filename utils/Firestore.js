@@ -44,7 +44,6 @@ const getServers = async (userId) => {
                 serverData.push(serverObj)
             })
         })
-    // console.log(serverData)
     return serverData
 }
 

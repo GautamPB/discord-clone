@@ -11,9 +11,13 @@ export const serverSlice = createSlice({
         initializeServers: (state, action) => {
             state.servers = [...state.servers, action.payload]
         },
+
+        deactivateServers: (state) => {
+            state.servers = []
+        },
     },
 })
 
-export const { initializeServers } = serverSlice.actions
+export const { initializeServers, deactivateServers } = serverSlice.actions
 export const selectServers = (state) => state.servers.servers
 export default serverSlice.reducer

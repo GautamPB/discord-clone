@@ -11,9 +11,13 @@ export const dmSlice = createSlice({
         initializeDms: (state, action) => {
             state.dms = [...state.dms, action.payload]
         },
+
+        deactivateDms: (state, action) => {
+            state.dms = []
+        },
     },
 })
 
-export const { initializeDms } = dmSlice.actions
+export const { initializeDms, deactivateDms } = dmSlice.actions
 export const selectDms = (state) => state.dms.dms
 export default dmSlice.reducer

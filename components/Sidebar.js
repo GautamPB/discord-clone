@@ -9,6 +9,9 @@ import Modal from 'react-modal'
 import { createServer } from '../utils/Firestore'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../slices/userSlice'
+import { useDispatch } from 'react-redux'
+import { deactivateServers } from '../slices/serverSlice'
+import { deactivateDms } from '../slices/dmSlice'
 
 const style = {
     content: {
@@ -30,6 +33,8 @@ const Sidebar = () => {
     const [openModal, setOpenModal] = useState(false)
     const [serverName, setServerName] = useState('')
     const [serverPhoto, setServerPhoto] = useState('')
+
+    const dispatch = useDispatch()
 
     const currentUser = useSelector(selectUser)
 
@@ -56,7 +61,11 @@ const Sidebar = () => {
             <div className="border-b border-gray-700 pb-4 flex items-center">
                 <div className="bg-white w-1.5 h-8 rounded-lg absolute left-0 flex-col flex" />
                 <Avatar
-                    onClick={() => auth.signOut()}
+                    onClick={() => {
+                        auth.signOut()
+                        dispatch(deactivateServers())
+                        dispatch(deactivateDms())
+                    }}
                     className="cursor-pointer"
                     src={user ? user.photoURL : '/discord-avatar.jpg'}
                 />

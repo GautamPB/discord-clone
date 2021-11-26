@@ -9,7 +9,7 @@ export const serverSlice = createSlice({
     initialState,
     reducers: {
         initializeServers: (state, action) => {
-            state.servers = [...state.servers, action.payload]
+            state.servers = [...action.payload]
         },
 
         deactivateServers: (state) => {

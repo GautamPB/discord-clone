@@ -16,10 +16,10 @@ export default function Home() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        getCurrentUser(user.email).then((userData) => {
+        getCurrentUser(user.email).then(async (userData) => {
             dispatch(initializeUser(userData))
-            getServers(userData.id).then((serverData) => {
-                dispatch(initializeServers(...serverData))
+            await getServers(userData.id).then((serverData) => {
+                dispatch(initializeServers(serverData))
             })
         })
     }, [user])
@@ -39,7 +39,7 @@ export default function Home() {
                 <div className="flex h-[100vh]">
                     <Sidebar />
                     <MiddleBar />
-                    <ChatScreen />
+                    {/* <ChatScreen /> */}
                 </div>
             ) : (
                 <Login />

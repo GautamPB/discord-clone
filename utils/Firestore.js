@@ -30,21 +30,29 @@ const createServer = async (
 }
 
 const getServers = async (userId) => {
-    let serverData = []
-    await db
+    const serverSnapshot = await db
         .collection('servers')
         .where('members', 'array-contains', userId)
         .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                const serverObj = {
-                    id: doc.id,
-                    ...doc.data(),
-                }
-                serverData.push(serverObj)
-            })
-        })
-    return serverData
+    // .then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //         const serverObj = {
+    //             id: doc.id,
+    //             ...doc.data(),
+    //         }
+    //         console.log(serverObj)
+    //         serverData.push(serverObj)
+    //     })
+    // })
+
+    const serverData = serverSnapshot.docs.map((serverDoc) => {
+        return {
+            id: serverDoc.id,
+            ...serverDoc.data(),
+        }
+    })
+    if (serverData) return serverData
+    return null
 }
 
 //------------------------USERS--------------------------------

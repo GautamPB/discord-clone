@@ -10,8 +10,13 @@ import { createServer } from '../utils/Firestore'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../slices/userSlice'
 import { useDispatch } from 'react-redux'
-import { deactivateServers } from '../slices/serverSlice'
+import {
+    deactivateServers,
+    selectServers,
+    addServer,
+} from '../slices/serverSlice'
 import { deactivateDms } from '../slices/dmSlice'
+import ServerImage from './ServerImage'
 
 const style = {
     content: {
@@ -37,17 +42,17 @@ const Sidebar = () => {
     const dispatch = useDispatch()
 
     const currentUser = useSelector(selectUser)
+    const servers = useSelector(selectServers)
 
     const handleCreateServer = (e) => {
         e.preventDefault()
-        console.log(currentUser[0])
         const createNewServer = async () => {
             await createServer(
                 serverName,
                 serverPhoto,
-                currentUser[0].id,
-                currentUser[0].name,
-                currentUser[0].email
+                currentUser.id,
+                currentUser.name,
+                currentUser.email
             )
         }
         createNewServer()
@@ -69,6 +74,15 @@ const Sidebar = () => {
                     className="cursor-pointer"
                     src={user ? user.photoURL : '/discord-avatar.jpg'}
                 />
+            </div>
+
+            <div className="flex flex-col items-center space-y-4">
+                {servers?.map((serverObj) => (
+                    <ServerImage
+                        photoURL={serverObj.photoURL}
+                        serverId={serverObj.serverId}
+                    />
+                ))}
             </div>
 
             <div className="flex flex-col space-y-2">

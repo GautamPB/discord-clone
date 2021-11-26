@@ -12,6 +12,10 @@ export const serverSlice = createSlice({
             state.servers = [...action.payload]
         },
 
+        addServer: (state, action) => {
+            state.servers = [...state.servers, action.payload]
+        },
+
         deactivateServers: (state) => {
             state.servers = []
         },

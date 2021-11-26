@@ -1,7 +1,17 @@
 import { db } from '../firebase'
-import { addDoc, collection } from 'firebase/firestore'
 
 //------------------------SERVERS--------------------------------
+const createChannel = async (serverId, channelName, userId) => {
+    await db
+        .collection('servers')
+        .doc(serverId)
+        .collection('channels')
+        .add({
+            channelName,
+            users: [userId],
+        })
+}
+
 const createServer = async (
     serverName,
     photoURL,
@@ -19,13 +29,11 @@ const createServer = async (
             ownerEmail,
             members: [ownerId],
         })
-        .then((serverRef) => {
-            db.collection('servers')
-                .doc(serverRef.id)
-                .collection('channels')
-                .add({
-                    channelName: 'general',
-                })
+        .then(async (serverRef) => {
+            db.collection('servers').doc(serverRef.id).update({
+                serverId: serverRef.id,
+            })
+            await createChannel(serverRef.id, 'general', ownerId)
         })
 }
 
@@ -47,7 +55,7 @@ const getServers = async (userId) => {
 
     const serverData = serverSnapshot.docs.map((serverDoc) => {
         return {
-            id: serverDoc.id,
+            // id: serverDoc.id,
             ...serverDoc.data(),
         }
     })

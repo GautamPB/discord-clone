@@ -10,6 +10,7 @@ import { createServer } from '../utils/Firestore'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../slices/userSlice'
 import { useDispatch } from 'react-redux'
+import { useRouter } from 'next/router'
 import {
     deactivateServers,
     selectServers,
@@ -40,6 +41,7 @@ const Sidebar = () => {
     const [serverPhoto, setServerPhoto] = useState('')
 
     const dispatch = useDispatch()
+    const router = useRouter()
 
     const currentUser = useSelector(selectUser)
     const servers = useSelector(selectServers)
@@ -67,6 +69,7 @@ const Sidebar = () => {
                 <div className="bg-white w-1.5 h-8 rounded-lg absolute left-0 flex-col flex" />
                 <Avatar
                     onClick={() => {
+                        router.push('/')
                         auth.signOut()
                         dispatch(deactivateServers())
                         dispatch(deactivateDms())

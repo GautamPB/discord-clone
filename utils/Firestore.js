@@ -63,6 +63,12 @@ const getServers = async (userId) => {
     return null
 }
 
+const fetchServerData = async (serverId) => {
+    const serverSnapshot = await db.collection('servers').doc(serverId).get()
+
+    return serverSnapshot.data()
+}
+
 //------------------------USERS--------------------------------
 const getCurrentUser = async (email) => {
     const userSnapshot = await db
@@ -80,4 +86,4 @@ const getCurrentUser = async (email) => {
     return doc[0]
 }
 
-export { createServer, getCurrentUser, getServers }
+export { createServer, getCurrentUser, getServers, fetchServerData }

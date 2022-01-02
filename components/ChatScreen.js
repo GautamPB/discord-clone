@@ -1,13 +1,18 @@
+import { useSelector } from 'react-redux'
+import { selectActiveServer } from '../slices/activeServerSlice'
+
 const ChatScreen = () => {
+    const activeServer = useSelector(selectActiveServer)
+
     return (
         <div className="bg-[#36393F] w-full text-white px-2 h-full relative">
-            <h1 className="shadow px-2 py-4 z-50">Chat Screen</h1>
+            <h1 className="shadow px-2 py-4 z-50">{activeServer.serverName}</h1>
 
-            <div className="w-full overflow-y-scroll z-0 h-[88%] flex flex-col">
+            <div className="m-0 w-full overflow-y-scroll z-0 h-[88%] flex flex-col">
                 <h1>Message Tab</h1>
             </div>
 
-            <div className="w-[99%] absolute bottom-2 bg-[#36393F] z-50">
+            <div className="w-[99%] bottom-2 bg-[#36393F] z-50">
                 <input
                     type="text"
                     placeholder="Type a message"

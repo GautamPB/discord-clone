@@ -42,7 +42,7 @@ const MiddleBar = () => {
     }
 
     return (
-        <div className="bg-[#33363C] w-full py-4 hidden lg:inline-block items-center space-y-3">
+        <div className="bg-[#33363C] w-full py-4 items-center space-y-3 h-full">
             <div className="space-y-3 px-4">
                 <form>
                     <input

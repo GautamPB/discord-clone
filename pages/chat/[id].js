@@ -21,7 +21,11 @@ const Chat = () => {
     const [user] = useAuthState(auth)
     const dispatch = useDispatch()
 
-    const [activeServer, setActiveServer] = useState([])
+    const [activeServer, setActiveServer] = useState({})
+
+    const [middleBarData, setMiddleBarData] = useState([])
+
+    const [dataType, setDataType] = useState('')
 
     const router = useRouter()
 
@@ -40,7 +44,12 @@ const Chat = () => {
                 if (serverData) {
                     setActiveServer(serverData)
                     dispatch(initializeActiveServer(serverData))
-                    await fetchServerChannels(serverId.id)
+                    await fetchServerChannels(serverId.id).then(
+                        (channelData) => {
+                            setMiddleBarData(channelData)
+                            setDataType('server')
+                        }
+                    )
                 }
             })
         }
@@ -56,7 +65,10 @@ const Chat = () => {
             <Sidebar />
             <div className="flex items-center w-full h-full">
                 <div className="hidden w-[300px] lg:flex lg:h-full">
-                    <MiddleBar />
+                    <MiddleBar
+                        middleBarData={middleBarData}
+                        dataType={dataType}
+                    />
                 </div>
                 <ChatScreen />
             </div>

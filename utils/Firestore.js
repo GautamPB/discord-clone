@@ -87,8 +87,6 @@ const fetchServerChannels = async (serverId) => {
         channelData.push(channelObj)
     })
 
-    console.log(channelData)
-
     return channelData
 }
 

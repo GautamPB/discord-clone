@@ -4,6 +4,7 @@ import {
     getCurrentUser,
     getServers,
     fetchServerData,
+    fetchServerChannels,
 } from '../../utils/Firestore'
 import Sidebar from '../../components/Sidebar'
 import MiddleBar from '../../components/MiddleBar'
@@ -20,7 +21,7 @@ const Chat = () => {
     const [user] = useAuthState(auth)
     const dispatch = useDispatch()
 
-    const [activeServer, setActiveServer] = useState({})
+    const [activeServer, setActiveServer] = useState([])
 
     const router = useRouter()
 
@@ -35,9 +36,12 @@ const Chat = () => {
         })
 
         const getServerData = async () => {
-            await fetchServerData(serverId.id).then((serverData) => {
-                setActiveServer(serverData)
-                dispatch(initializeActiveServer(serverData))
+            await fetchServerData(serverId.id).then(async (serverData) => {
+                if (serverData) {
+                    setActiveServer(serverData)
+                    dispatch(initializeActiveServer(serverData))
+                    await fetchServerChannels(serverId.id)
+                }
             })
         }
         getServerData()

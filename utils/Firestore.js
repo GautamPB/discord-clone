@@ -69,6 +69,29 @@ const fetchServerData = async (serverId) => {
     return serverSnapshot.data()
 }
 
+const fetchServerChannels = async (serverId) => {
+    const channelsSnapshot = await db
+        .collection('servers')
+        .doc(serverId)
+        .collection('channels')
+        .get()
+
+    const channelData = []
+
+    channelsSnapshot.forEach((channelDoc) => {
+        const channelObj = {
+            id: channelDoc.id,
+            ...channelDoc.data(),
+        }
+
+        channelData.push(channelObj)
+    })
+
+    console.log(channelData)
+
+    return channelData
+}
+
 //------------------------USERS--------------------------------
 const getCurrentUser = async (email) => {
     const userSnapshot = await db
@@ -86,4 +109,10 @@ const getCurrentUser = async (email) => {
     return doc[0]
 }
 
-export { createServer, getCurrentUser, getServers, fetchServerData }
+export {
+    createServer,
+    getCurrentUser,
+    getServers,
+    fetchServerData,
+    fetchServerChannels,
+}

@@ -6,7 +6,9 @@ const ChatScreen = () => {
 
     return (
         <div className="bg-[#36393F] w-full text-white px-2 h-full relative">
-            <h1 className="shadow px-2 py-4 z-50">{activeServer.serverName}</h1>
+            <h1 className="shadow px-2 py-4 z-50 font-semibold">
+                {activeServer.serverName}
+            </h1>
 
             <div className="m-0 w-full overflow-y-scroll z-0 h-[88%] flex flex-col">
                 <h1>Message Tab</h1>

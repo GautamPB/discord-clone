@@ -13,8 +13,6 @@ import { selectActiveServer } from '../slices/activeServerSlice'
 const MiddleBar = ({ middleBarData, dataType }) => {
     const [user] = useAuthState(auth)
 
-    console.log(middleBarData)
-
     const activeServer = useSelector(selectActiveServer)
 
     const chatRef = db
@@ -66,17 +64,20 @@ const MiddleBar = ({ middleBarData, dataType }) => {
                     </div>
 
                     <div className="px-2">
-                        {middleBarData.map((channelData) => (
-                            <p
-                                className={`font-semibold px-3 pt-[2px] pb-[8px] rounded-md cursor-pointer ${
-                                    activeChannel === channelData.channelName
-                                        ? 'bg-[#393C42] text-white'
-                                        : 'text-gray-500'
-                                }}`}
-                            >
-                                #&nbsp;{channelData.channelName}
-                            </p>
-                        ))}
+                        <div>
+                            {middleBarData.map((channelData) => (
+                                <p
+                                    className={`${
+                                        channelData.channelName ===
+                                        activeChannel
+                                            ? 'channelStyle activeChannelStyle'
+                                            : 'channelStyle'
+                                    }`}
+                                >
+                                    #&nbsp;{channelData.channelName}
+                                </p>
+                            ))}
+                        </div>
                     </div>
                 </>
             ) : (

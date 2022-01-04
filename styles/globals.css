@@ -10,4 +10,8 @@
     .activeChannelStyle {
         @apply font-semibold text-white bg-[#393C42];
     }
+
+    .serverOptions {
+        @apply font-semibold text-[15px] flex items-center cursor-pointer;
+    }
 }

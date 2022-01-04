@@ -53,6 +53,21 @@ const MiddleBar = ({ middleBarData, dataType }) => {
         setEmail('')
     }
 
+    const handleInvitePeople = (e) => {
+        e.preventDefault()
+        console.log('Invite People function')
+    }
+
+    const handleCreateChannel = (e) => {
+        e.preventDefault()
+        console.log('Create channel function')
+    }
+
+    const handleLeaveServer = (e) => {
+        e.preventDefault()
+        console.log('Leave server function')
+    }
+
     return (
         <div className="bg-[#33363C] w-full pb-4 items-center space-y-3 h-full">
             {middleBarData && dataType === 'server' ? (
@@ -67,19 +82,28 @@ const MiddleBar = ({ middleBarData, dataType }) => {
 
                         <ChevronDownIcon className="h-5 text-white mr-4" />
 
-                        {!openDropdown ? (
+                        {openDropdown ? (
                             <div className="flex flex-col absolute bg-[#18191C] p-4 rounded-md top-[4rem] w-[90%] left-3 space-y-3">
-                                <div className="serverOptions text-[#3F51B5] ">
+                                <div
+                                    className="serverOptions text-[#3F51B5]"
+                                    onClick={handleInvitePeople}
+                                >
                                     <p className="flex-1">Invite People</p>
                                     <PersonAddIcon className="text-[10px] " />
                                 </div>
 
-                                <div className="serverOptions text-white">
+                                <div
+                                    className="serverOptions text-white"
+                                    onClick={handleCreateChannel}
+                                >
                                     <p className="flex-1">Create Channel</p>
                                     <PlusIcon className="h-6" />
                                 </div>
 
-                                <div className="serverOptions text-[#B71C1C]">
+                                <div
+                                    className="serverOptions text-[#B71C1C]"
+                                    onClick={handleLeaveServer}
+                                >
                                     <p className="flex-1">Leave Server</p>
                                     <LogoutIcon className="h-6" />
                                 </div>

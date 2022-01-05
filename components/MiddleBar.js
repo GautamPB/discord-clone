@@ -1,3 +1,12 @@
+// const doc = db.collection('cities').doc('SF');
+
+// const observer = doc.onSnapshot(docSnapshot => {
+//   console.log(`Received doc snapshot: ${docSnapshot}`);
+//   // ...
+// }, err => {
+//   console.log(`Encountered error: ${err}`);
+// }); listener for firestore
+
 //render DMs first.
 //render channels once server has been selected.
 import { useState } from 'react'
@@ -13,23 +22,51 @@ import { ChevronDownIcon } from '@heroicons/react/solid'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import { PlusIcon } from '@heroicons/react/solid'
 import { LogoutIcon } from '@heroicons/react/solid'
+import { createChannel, inviteUserToServer } from '../utils/Firestore'
+import { useRouter } from 'next/router'
+import { selectUser } from '../slices/userSlice'
+import Modal from 'react-modal'
+
+const style = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        transform: 'translate(-50%, -50%)',
+        marginRight: '-50%',
+        backgroundColor: '#202225',
+        border: 'none',
+        padding: '3rem',
+        borderRadius: '20px',
+    },
+}
 
 const MiddleBar = ({ middleBarData, dataType }) => {
     const [user] = useAuthState(auth)
 
+    const router = useRouter()
+
+    const serverId = router.query
+
     const activeServer = useSelector(selectActiveServer)
+
+    const activeUser = useSelector(selectUser)
 
     const chatRef = db
         .collection('chats')
-        .where('users', 'array-contains', user.email)
+        .where('users', 'array-contains', user.email) //to fetch user dms
 
     const [chatsSnapshot] = useCollection(chatRef)
 
     const [email, setEmail] = useState('')
-
+    const [channelName, setChannelName] = useState('')
+    const [openInvitePeopleModal, setOpenInvitePeopleModal] = useState(false)
+    const [openCreateChannelModal, setOpenCreateChannelModal] = useState(false)
+    const [openLeaveServerModal, setOpenLeaveServerModal] = useState(false)
     const [activeChannel, setActiveChannel] = useState('general')
-
     const [openDropdown, setOpenDropdown] = useState(false)
+    const [invitedEmail, setInvitedEmail] = useState('')
 
     const checkChatExists = (recipientEmail) => {
         return chatsSnapshot?.docs.find(
@@ -53,14 +90,16 @@ const MiddleBar = ({ middleBarData, dataType }) => {
         setEmail('')
     }
 
-    const handleInvitePeople = (e) => {
+    const handleInvitePeople = async (e) => {
         e.preventDefault()
-        console.log('Invite People function')
+        setOpenInvitePeopleModal(false)
+        await inviteUserToServer(serverId.id, invitedEmail)
     }
 
-    const handleCreateChannel = (e) => {
+    const handleCreateChannel = async (e) => {
         e.preventDefault()
-        console.log('Create channel function')
+        setOpenCreateChannelModal(false)
+        await createChannel(serverId.id, channelName, activeUser.id)
     }
 
     const handleLeaveServer = (e) => {
@@ -86,7 +125,9 @@ const MiddleBar = ({ middleBarData, dataType }) => {
                             <div className="flex flex-col absolute bg-[#18191C] p-4 rounded-md top-[4rem] w-[90%] left-3 space-y-3">
                                 <div
                                     className="serverOptions text-[#3F51B5]"
-                                    onClick={handleInvitePeople}
+                                    onClick={() =>
+                                        setOpenInvitePeopleModal(true)
+                                    }
                                 >
                                     <p className="flex-1">Invite People</p>
                                     <PersonAddIcon className="text-[10px] " />
@@ -94,7 +135,9 @@ const MiddleBar = ({ middleBarData, dataType }) => {
 
                                 <div
                                     className="serverOptions text-white"
-                                    onClick={handleCreateChannel}
+                                    onClick={() =>
+                                        setOpenCreateChannelModal(true)
+                                    }
                                 >
                                     <p className="flex-1">Create Channel</p>
                                     <PlusIcon className="h-6" />
@@ -120,7 +163,7 @@ const MiddleBar = ({ middleBarData, dataType }) => {
                     </div>
 
                     <div className="px-2">
-                        <div className="flex flex-col space-y-3">
+                        <div className="flex flex-col space-y-1">
                             {middleBarData.map((channelData) => (
                                 <p
                                     onClick={() =>
@@ -189,6 +232,117 @@ const MiddleBar = ({ middleBarData, dataType }) => {
                     </div>
                 </>
             )}
+
+            <Modal
+                style={style}
+                isOpen={openInvitePeopleModal}
+                onRequestClose={() => {
+                    setOpenInvitePeopleModal(false)
+                    setInvitedEmail('')
+                }}
+            >
+                <div className="flex flex-col items-center space-y-6">
+                    <h1 className="font-bold text-[35px] text-white">
+                        Invite a person
+                    </h1>
+
+                    <form
+                        onSubmit={handleInvitePeople}
+                        className="flex flex-col space-y-3"
+                    >
+                        <input
+                            autoFocus
+                            placeholder="Email of person to invite"
+                            className="bg-[#33363C] text-lg px-3 py-2 font-semibold rounded-lg text-white"
+                            type="email"
+                            value={invitedEmail}
+                            onChange={(e) => setInvitedEmail(e.target.value)}
+                        />
+
+                        <button
+                            type="submit"
+                            className="bg-[#7289DA] font-semibold w-full py-1 rounded-lg text-white text-lg"
+                            onSubmit={handleInvitePeople}
+                        >
+                            Invite
+                        </button>
+                    </form>
+                </div>
+            </Modal>
+
+            <Modal
+                style={style}
+                isOpen={openCreateChannelModal}
+                onRequestClose={() => {
+                    setOpenCreateChannelModal(false)
+                    setChannelName('')
+                }}
+            >
+                <div className="flex flex-col items-center space-y-6">
+                    <h1 className="font-bold text-[35px] text-white">
+                        Create a channel
+                    </h1>
+
+                    <form
+                        onSubmit={handleCreateChannel}
+                        className="flex flex-col space-y-3"
+                    >
+                        <input
+                            autoFocus
+                            placeholder="Channel Name"
+                            className="bg-[#33363C] text-lg px-3 py-2 font-semibold rounded-lg text-white"
+                            type="text"
+                            value={channelName}
+                            onChange={(e) => setChannelName(e.target.value)}
+                        />
+
+                        <button
+                            type="submit"
+                            className="bg-[#7289DA] font-semibold w-full py-1 rounded-lg text-white text-lg"
+                            onSubmit={handleCreateChannel}
+                        >
+                            Create Channel
+                        </button>
+                    </form>
+                </div>
+            </Modal>
+
+            <Modal
+                style={style}
+                isOpen={openCreateChannelModal}
+                onRequestClose={() => {
+                    setOpenCreateChannelModal(false)
+                    setChannelName('')
+                }}
+            >
+                <div className="flex flex-col items-center space-y-6">
+                    <h1 className="font-bold text-[35px] text-white">
+                        Create a channel
+                    </h1>
+
+                    <form
+                        onSubmit={handleCreateChannel}
+                        className="flex flex-col space-y-3"
+                    >
+                        <input
+                            autoFocus
+                            placeholder="Channel Name"
+                            className="bg-[#33363C] text-lg px-3 py-2 font-semibold rounded-lg text-white"
+                            type="text"
+                            value={channelName}
+                            onChange={(e) => setChannelName(e.target.value)}
+                        />
+
+                        <button
+                            type="submit"
+                            className="bg-[#7289DA] font-semibold w-full py-1 rounded-lg text-white text-lg"
+                            onSubmit={handleCreateChannel}
+                        >
+                            Create Channel
+                        </button>
+                    </form>
+                </div>
+            </Modal>
         </div>
     )
 }

@@ -10,6 +10,15 @@ const createChannel = async (serverId, channelName, userId) => {
             channelName,
             users: [userId],
         })
+        .then((channelRef) => {
+            db.collection('servers')
+                .doc(serverId)
+                .collection('channels')
+                .doc(channelRef.id)
+                .update({
+                    channelId: channelRef.id,
+                })
+        })
 }
 
 const createServer = async (
@@ -90,6 +99,10 @@ const fetchServerChannels = async (serverId) => {
     return channelData
 }
 
+const inviteUserToServer = async (serverId, userEmail) => {
+    console.log(serverId, userEmail)
+}
+
 //------------------------USERS--------------------------------
 const getCurrentUser = async (email) => {
     const userSnapshot = await db
@@ -113,4 +126,6 @@ export {
     getServers,
     fetchServerData,
     fetchServerChannels,
+    createChannel,
+    inviteUserToServer,
 }

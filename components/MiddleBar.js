@@ -93,6 +93,7 @@ const MiddleBar = ({ middleBarData, dataType }) => {
     const handleInvitePeople = async (e) => {
         e.preventDefault()
         setOpenInvitePeopleModal(false)
+        setInvitedEmail('')
         await inviteUserToServer(serverId.id, invitedEmail)
     }
 

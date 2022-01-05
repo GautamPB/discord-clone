@@ -1,4 +1,5 @@
 import { db } from '../firebase'
+import firebase from 'firebase'
 
 //------------------------SERVERS--------------------------------
 const createChannel = async (serverId, channelName, userId) => {
@@ -100,7 +101,28 @@ const fetchServerChannels = async (serverId) => {
 }
 
 const inviteUserToServer = async (serverId, userEmail) => {
-    console.log(serverId, userEmail)
+    const userRef = await db
+        .collection('users')
+        .where('email', '==', userEmail)
+        .get()
+
+    const userDoc = userRef.docs.map((userDoc) => {
+        return {
+            id: userDoc.id,
+            ...userDoc.data(),
+        }
+    })
+
+    const userId = userDoc[0].id
+
+    console.log(userId)
+
+    await db
+        .collection('servers')
+        .doc(serverId)
+        .update({
+            members: firebase.firestore.FieldValue.arrayUnion(userId),
+        })
 }
 
 //------------------------USERS--------------------------------

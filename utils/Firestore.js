@@ -113,8 +113,6 @@ const inviteUserToServer = async (serverId, userEmail) => {
         }
     })
 
-    const userId = userDoc[0].id
-
     console.log(userId)
 
     await db
@@ -123,6 +121,10 @@ const inviteUserToServer = async (serverId, userEmail) => {
         .update({
             members: firebase.firestore.FieldValue.arrayUnion(userId),
         })
+}
+
+const leaveServer = async (userEmail) => {
+    console.log(`${userEmail} wants to leave`)
 }
 
 //------------------------USERS--------------------------------
@@ -150,4 +152,5 @@ export {
     fetchServerChannels,
     createChannel,
     inviteUserToServer,
+    leaveServer,
 }

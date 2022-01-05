@@ -22,7 +22,11 @@ import { ChevronDownIcon } from '@heroicons/react/solid'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import { PlusIcon } from '@heroicons/react/solid'
 import { LogoutIcon } from '@heroicons/react/solid'
-import { createChannel, inviteUserToServer } from '../utils/Firestore'
+import {
+    createChannel,
+    inviteUserToServer,
+    leaveServer,
+} from '../utils/Firestore'
 import { useRouter } from 'next/router'
 import { selectUser } from '../slices/userSlice'
 import Modal from 'react-modal'
@@ -103,9 +107,10 @@ const MiddleBar = ({ middleBarData, dataType }) => {
         await createChannel(serverId.id, channelName, activeUser.id)
     }
 
-    const handleLeaveServer = (e) => {
+    const handleLeaveServer = async (e) => {
         e.preventDefault()
-        console.log('Leave server function')
+        setOpenLeaveServerModal(false)
+        await leaveServer(activeUser.email)
     }
 
     return (
@@ -146,7 +151,9 @@ const MiddleBar = ({ middleBarData, dataType }) => {
 
                                 <div
                                     className="serverOptions text-[#B71C1C]"
-                                    onClick={handleLeaveServer}
+                                    onClick={() =>
+                                        setOpenLeaveServerModal(true)
+                                    }
                                 >
                                     <p className="flex-1">Leave Server</p>
                                     <LogoutIcon className="h-6" />
@@ -310,38 +317,31 @@ const MiddleBar = ({ middleBarData, dataType }) => {
 
             <Modal
                 style={style}
-                isOpen={openCreateChannelModal}
+                isOpen={openLeaveServerModal}
                 onRequestClose={() => {
-                    setOpenCreateChannelModal(false)
-                    setChannelName('')
+                    setOpenLeaveServerModal(false)
                 }}
             >
                 <div className="flex flex-col items-center space-y-6">
                     <h1 className="font-bold text-[35px] text-white">
-                        Create a channel
+                        Are you sure you want to leave?
                     </h1>
 
-                    <form
-                        onSubmit={handleCreateChannel}
-                        className="flex flex-col space-y-3"
-                    >
-                        <input
-                            autoFocus
-                            placeholder="Channel Name"
-                            className="bg-[#33363C] text-lg px-3 py-2 font-semibold rounded-lg text-white"
-                            type="text"
-                            value={channelName}
-                            onChange={(e) => setChannelName(e.target.value)}
-                        />
+                    <div className="flex items-center w-full space-x-4">
+                        <button
+                            className="bg-[#B71C1C] font-semibold w-full py-1 rounded-lg text-white text-lg"
+                            onClick={handleLeaveServer}
+                        >
+                            Yes
+                        </button>
 
                         <button
-                            type="submit"
                             className="bg-[#7289DA] font-semibold w-full py-1 rounded-lg text-white text-lg"
-                            onSubmit={handleCreateChannel}
+                            onClick={() => setOpenLeaveServerModal(false)}
                         >
-                            Create Channel
+                            No
                         </button>
-                    </form>
+                    </div>
                 </div>
             </Modal>
         </div>

@@ -38,7 +38,6 @@ export default function Home() {
                 <div className="flex h-[100vh]">
                     <Sidebar />
                     <MiddleBar />
-                    {/* <ChatScreen /> */}
                 </div>
             ) : (
                 <Login />

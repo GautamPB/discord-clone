@@ -123,8 +123,25 @@ const inviteUserToServer = async (serverId, userEmail) => {
         })
 }
 
-const leaveServer = async (userEmail) => {
-    console.log(`${userEmail} wants to leave`)
+const leaveServer = async (userId, userEmail, serverId) => {
+    const serverRef = await db.collection('servers').doc(serverId).get()
+
+    const serverObj = {
+        id: serverRef.id,
+        ...serverRef.data(),
+    }
+
+    if (serverObj.ownerEmail === userEmail) {
+        console.log('You are the owner of this server')
+    } else {
+        await db
+            .collection('servers')
+            .doc(serverId)
+            .update({
+                members: firebase.firestore.FieldValue.arrayRemove(userId),
+            })
+        console.log('User has been removed')
+    }
 }
 
 //------------------------USERS--------------------------------

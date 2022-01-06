@@ -110,7 +110,7 @@ const MiddleBar = ({ middleBarData, dataType }) => {
     const handleLeaveServer = async (e) => {
         e.preventDefault()
         setOpenLeaveServerModal(false)
-        await leaveServer(activeUser.email)
+        await leaveServer(activeUser.id, activeUser.email, serverId.id)
     }
 
     return (

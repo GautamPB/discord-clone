@@ -1,13 +1,13 @@
 import { useSelector } from 'react-redux'
 import { selectActiveServer } from '../slices/activeServerSlice'
 
-const ChatScreen = () => {
+const ChatScreen = ({ activeChannel }) => {
     const activeServer = useSelector(selectActiveServer)
 
     return (
         <div className="bg-[#36393F] w-full text-white px-2 h-full relative">
             <h1 className="shadow px-2 py-4 z-50 font-semibold">
-                {activeServer.serverName}
+                {/* {activeServer.serverName} */}#{activeChannel}
             </h1>
 
             <div className="m-0 w-full overflow-y-scroll z-0 h-[88%] flex flex-col">

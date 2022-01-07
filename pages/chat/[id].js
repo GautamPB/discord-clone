@@ -25,11 +25,17 @@ const Chat = () => {
 
     const [middleBarData, setMiddleBarData] = useState([])
 
+    const [activeChannel, setActiveChannel] = useState('general')
+
     const [dataType, setDataType] = useState('')
 
     const router = useRouter()
 
     const serverId = router.query
+
+    const changeActiveChannel = (newChannel) => {
+        setActiveChannel(newChannel)
+    }
 
     useEffect(() => {
         getCurrentUser(user.email).then(async (userData) => {
@@ -68,9 +74,11 @@ const Chat = () => {
                     <MiddleBar
                         middleBarData={middleBarData}
                         dataType={dataType}
+                        changeActiveChannel={changeActiveChannel}
+                        activeChannel={activeChannel}
                     />
                 </div>
-                <ChatScreen />
+                <ChatScreen activeChannel={activeChannel} />
             </div>
         </div>
     )

@@ -46,7 +46,12 @@ const style = {
     },
 }
 
-const MiddleBar = ({ middleBarData, dataType }) => {
+const MiddleBar = ({
+    middleBarData,
+    dataType,
+    changeActiveChannel,
+    activeChannel,
+}) => {
     const [user] = useAuthState(auth)
 
     const router = useRouter()
@@ -68,7 +73,7 @@ const MiddleBar = ({ middleBarData, dataType }) => {
     const [openInvitePeopleModal, setOpenInvitePeopleModal] = useState(false)
     const [openCreateChannelModal, setOpenCreateChannelModal] = useState(false)
     const [openLeaveServerModal, setOpenLeaveServerModal] = useState(false)
-    const [activeChannel, setActiveChannel] = useState('general')
+    // const [activeChannel, setActiveChannel] = useState('general')
     const [openDropdown, setOpenDropdown] = useState(false)
     const [invitedEmail, setInvitedEmail] = useState('')
 
@@ -175,7 +180,7 @@ const MiddleBar = ({ middleBarData, dataType }) => {
                             {middleBarData.map((channelData) => (
                                 <p
                                     onClick={() =>
-                                        setActiveChannel(
+                                        changeActiveChannel(
                                             channelData.channelName
                                         )
                                     }

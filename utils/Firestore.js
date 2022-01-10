@@ -191,13 +191,30 @@ const fetchChannelId = async (serverId, channelName) => {
         }
     })
 
-    console.log(channelDoc[0].id)
+    // console.log(channelDoc[0].id)
     return channelDoc[0].id
 }
 
 //------------------------MESSAGES--------------------------------
-const sendMessage = async (serverId, channelId) => {
-    console.log(serverId, channelId)
+const sendMessage = async (
+    serverId,
+    channelId,
+    message,
+    userEmail,
+    profilePhoto
+) => {
+    await db
+        .collection('servers')
+        .doc(serverId)
+        .collection('channels')
+        .doc(channelId)
+        .collection('messages')
+        .add({
+            message,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            profilePhoto,
+            userEmail,
+        })
 }
 
 export {

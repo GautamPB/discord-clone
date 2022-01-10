@@ -1,8 +1,6 @@
 import MessageComponent from './MessageComponent'
 
 const MessagesAreaComponent = ({ serverId, channelId }) => {
-    console.log(serverId, channelId)
-
     return (
         <div className="h-full overflow-y-scroll z-0">
             <MessageComponent

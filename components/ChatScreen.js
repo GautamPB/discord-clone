@@ -3,11 +3,28 @@ import { selectActiveServer } from '../slices/activeServerSlice'
 import { sendMessage, fetchChannelId } from '../utils/Firestore'
 import MessagesAreaComponent from './MessagesAreaComponent'
 import { useState, useEffect } from 'react'
+import { selectUser } from '../slices/userSlice'
 
 const ChatScreen = ({ serverId, activeChannel }) => {
     const activeServer = useSelector(selectActiveServer)
 
+    const activeUser = useSelector(selectUser)
+
     const [channelId, setChannelId] = useState('')
+
+    const [message, setMessage] = useState('')
+
+    const handleSendMessage = (e) => {
+        e.preventDefault()
+        sendMessage(
+            serverId,
+            channelId,
+            message,
+            activeUser.email,
+            activeUser.photoURL
+        )
+        setMessage('')
+    }
 
     useEffect(() => {
         fetchChannelId(serverId, activeChannel).then((activeChannelId) => {
@@ -28,11 +45,16 @@ const ChatScreen = ({ serverId, activeChannel }) => {
                 />
             </div>
 
-            <form className="w-[99%] bottom-2 bg-[#36393F] z-50">
+            <form
+                className="w-[99%] bottom-2 bg-[#36393F] z-50"
+                onSubmit={handleSendMessage}
+            >
                 <input
                     type="text"
                     placeholder="Type a message"
                     className="border-none outline-none rounded-md p-2 w-full bg-[#40444B]"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                 />
             </form>
         </div>

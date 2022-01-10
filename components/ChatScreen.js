@@ -39,10 +39,14 @@ const ChatScreen = ({ serverId, activeChannel }) => {
             </h1>
 
             <div className="m-0 w-full z-0 h-[88%] flex flex-col px-2 py-4">
-                <MessagesAreaComponent
-                    serverId={activeServer.serverId}
-                    channelId={channelId}
-                />
+                {serverId && channelId ? (
+                    <MessagesAreaComponent
+                        serverId={activeServer.serverId}
+                        channelId={channelId}
+                    />
+                ) : (
+                    <></>
+                )}
             </div>
 
             <form

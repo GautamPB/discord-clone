@@ -174,6 +174,11 @@ const getCurrentUser = async (email) => {
     return doc[0]
 }
 
+//------------------------MESSAGES--------------------------------
+const sendMessage = async (serverId, channelId) => {
+    console.log(serverId, channelId)
+}
+
 export {
     createServer,
     getCurrentUser,
@@ -183,4 +188,5 @@ export {
     createChannel,
     inviteUserToServer,
     leaveServer,
+    sendMessage,
 }

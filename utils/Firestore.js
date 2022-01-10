@@ -174,6 +174,27 @@ const getCurrentUser = async (email) => {
     return doc[0]
 }
 
+const fetchChannelId = async (serverId, channelName) => {
+    console.log(serverId, channelName)
+
+    const channelSnapshot = await db
+        .collection('servers')
+        .doc(serverId)
+        .collection('channels')
+        .where('channelName', '==', channelName)
+        .get()
+
+    const channelDoc = channelSnapshot.docs.map((channelDoc) => {
+        return {
+            id: channelDoc.id,
+            ...channelDoc.data(),
+        }
+    })
+
+    console.log(channelDoc[0].id)
+    return channelDoc[0].id
+}
+
 //------------------------MESSAGES--------------------------------
 const sendMessage = async (serverId, channelId) => {
     console.log(serverId, channelId)
@@ -189,4 +210,5 @@ export {
     inviteUserToServer,
     leaveServer,
     sendMessage,
+    fetchChannelId,
 }

@@ -1,15 +1,18 @@
 import { useSelector } from 'react-redux'
 import { selectActiveServer } from '../slices/activeServerSlice'
-// import MessageComponent from './MessageComponent'
-import { sendMessage } from '../utils/Firestore'
-import MessagesComponent from './MessagesComponent'
-import { useEffect } from 'react'
+import { sendMessage, fetchChannelId } from '../utils/Firestore'
+import MessagesAreaComponent from './MessagesAreaComponent'
+import { useState, useEffect } from 'react'
 
-const ChatScreen = ({ activeChannel }) => {
+const ChatScreen = ({ serverId, activeChannel }) => {
     const activeServer = useSelector(selectActiveServer)
 
+    const [channelId, setChannelId] = useState('')
+
     useEffect(() => {
-        console.log(activeChannel)
+        fetchChannelId(serverId, activeChannel).then((activeChannelId) => {
+            setChannelId(activeChannelId)
+        })
     }, [activeChannel])
 
     return (
@@ -18,10 +21,10 @@ const ChatScreen = ({ activeChannel }) => {
                 #{activeChannel}
             </h1>
 
-            <div className="m-0 w-full overflow-y-scroll z-0 h-[88%] flex flex-col px-2 py-4">
-                <MessagesComponent
+            <div className="m-0 w-full z-0 h-[88%] flex flex-col px-2 py-4">
+                <MessagesAreaComponent
                     serverId={activeServer.serverId}
-                    channelId={activeChannel}
+                    channelId={channelId}
                 />
             </div>
 

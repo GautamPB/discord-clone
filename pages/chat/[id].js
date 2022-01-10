@@ -16,8 +16,6 @@ import { initializeServers } from '../../slices/serverSlice'
 import { initializeActiveServer } from '../../slices/activeServerSlice'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { db } from '../../firebase'
 
 const Chat = () => {
     const [user] = useAuthState(auth)
@@ -80,7 +78,10 @@ const Chat = () => {
                         activeChannel={activeChannel}
                     />
                 </div>
-                <ChatScreen activeChannel={activeChannel} />
+                <ChatScreen
+                    serverId={serverId.id}
+                    activeChannel={activeChannel}
+                />
             </div>
         </div>
     )

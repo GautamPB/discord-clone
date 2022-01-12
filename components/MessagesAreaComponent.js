@@ -3,8 +3,6 @@ import { db } from '../firebase'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 const MessagesAreaComponent = ({ serverId, channelId }) => {
-    console.log(serverId, channelId)
-
     const messagesRef = db
         .collection('servers')
         .doc(serverId)
@@ -20,10 +18,13 @@ const MessagesAreaComponent = ({ serverId, channelId }) => {
         <div className="h-full overflow-y-scroll z-0 space-y-3">
             {messages?.map((message) => (
                 <MessageComponent
+                    key={message.messageId}
+                    messageId={message.messageId}
                     profilePhoto={message.profilePhoto}
                     userEmail={message.userEmail}
-                    timestamp={message.timestamp.toDate().toDateString()}
+                    timestamp={message.timestamp?.toDate().toDateString()}
                     message={message.message}
+                    channelId={channelId}
                 />
             ))}
             {/* <MessageComponent

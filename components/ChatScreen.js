@@ -50,7 +50,7 @@ const ChatScreen = ({ serverId, activeChannel }) => {
             </div>
 
             <form
-                className="w-[99%] bottom-2 bg-[#36393F] z-50"
+                className="w-[99%] bottom-2 bg-[#36393F] z-50 mx-4"
                 onSubmit={handleSendMessage}
             >
                 <input

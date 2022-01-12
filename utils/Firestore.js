@@ -175,8 +175,6 @@ const getCurrentUser = async (email) => {
 }
 
 const fetchChannelId = async (serverId, channelName) => {
-    console.log(serverId, channelName)
-
     const channelSnapshot = await db
         .collection('servers')
         .doc(serverId)
@@ -215,6 +213,31 @@ const sendMessage = async (
             profilePhoto,
             userEmail,
         })
+        .then(async (messageRef) => {
+            await db
+                .collection('servers')
+                .doc(serverId)
+                .collection('channels')
+                .doc(channelId)
+                .collection('messages')
+                .doc(messageRef.id)
+                .update({
+                    messageId: messageRef.id,
+                })
+        })
+}
+
+const editMessage = async (serverId, channelId, messageId, newMessage) => {
+    await db
+        .collection('servers')
+        .doc(serverId)
+        .collection('channels')
+        .doc(channelId)
+        .collection('messages')
+        .doc(messageId)
+        .update({
+            message: newMessage,
+        })
 }
 
 export {
@@ -228,4 +251,5 @@ export {
     leaveServer,
     sendMessage,
     fetchChannelId,
+    editMessage,
 }

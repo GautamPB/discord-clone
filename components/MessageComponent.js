@@ -3,8 +3,24 @@ import { DotsHorizontalIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
 import { PencilIcon } from '@heroicons/react/solid'
 import { TrashIcon } from '@heroicons/react/solid'
-import { editMessage } from '../utils/Firestore'
+import { editMessage, deleteMessage } from '../utils/Firestore'
 import { useRouter } from 'next/router'
+import Modal from 'react-modal'
+
+const style = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        transform: 'translate(-50%, -50%)',
+        marginRight: '-50%',
+        backgroundColor: '#35383E',
+        border: 'none',
+        padding: '3rem',
+        borderRadius: '20px',
+    },
+}
 
 const MessageComponent = ({
     messageId,
@@ -19,6 +35,8 @@ const MessageComponent = ({
     const [newMessage, setNewMessage] = useState(message)
 
     const [isEditing, setIsEditing] = useState(false)
+
+    const [openModal, setOpenModal] = useState(false)
 
     const router = useRouter()
 
@@ -39,7 +57,13 @@ const MessageComponent = ({
     const handleDeleteMessage = (e) => {
         e.preventDefault()
         setShowOptions(false)
-        console.log('Delete the message')
+        setOpenModal(true)
+    }
+
+    const handleConfirmDeleteMessage = (e) => {
+        e.preventDefault()
+        setOpenModal(false)
+        deleteMessage(serverId.id, channelId, messageId)
     }
 
     return (
@@ -102,6 +126,58 @@ const MessageComponent = ({
             ) : (
                 <></>
             )}
+
+            <Modal
+                style={style}
+                isOpen={openModal}
+                onRequestClose={() => setOpenModal(false)}
+            >
+                <div className="flex flex-col items-start space-y-3 w-full">
+                    <h1 className="text-white font-semibold text-xl">
+                        Delete Message
+                    </h1>
+
+                    <p className="text-[#BDBDBD]">
+                        Are you sure you want to delete this message?
+                    </p>
+
+                    <div className="p-2 flex items-start space-x-3 shadow-2xl border-gray-600 mt-3">
+                        <div>
+                            <Avatar src={profilePhoto} />
+                        </div>
+
+                        <div className="flex flex-col space-y-1 w-full">
+                            <div className="flex items-end space-x-3">
+                                <p className="font-semibold text-white">
+                                    {userEmail}
+                                </p>
+                                <p className="text-[12px] text-[#BDBDBD] font-semibold">
+                                    {timestamp}
+                                </p>
+                            </div>
+
+                            <div className="flex items-start w-full text-white">
+                                <p className="flex-1">{message}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex items-center space-x-3 p-3 mt-5">
+                    <p
+                        className="text-white ml-auto hover:underline cursor-pointer"
+                        onClick={() => setOpenModal(false)}
+                    >
+                        Cancel
+                    </p>
+                    <p
+                        className="text-white ml-auto cursor-pointer bg-[#B71C1C] py-2 px-4 rounded-md"
+                        onClick={handleConfirmDeleteMessage}
+                    >
+                        Delete
+                    </p>
+                </div>
+            </Modal>
         </div>
     )
 }

@@ -240,6 +240,17 @@ const editMessage = async (serverId, channelId, messageId, newMessage) => {
         })
 }
 
+const deleteMessage = async (serverId, channelId, messageId) => {
+    await db
+        .collection('servers')
+        .doc(serverId)
+        .collection('channels')
+        .doc(channelId)
+        .collection('messages')
+        .doc(messageId)
+        .delete()
+}
+
 export {
     createServer,
     getCurrentUser,
@@ -252,4 +263,5 @@ export {
     sendMessage,
     fetchChannelId,
     editMessage,
+    deleteMessage,
 }

@@ -31,7 +31,7 @@ const Chat = () => {
 
     const router = useRouter()
 
-    const serverId = router.query
+    const chatId = router.query
 
     const changeActiveChannel = (newChannel) => {
         setActiveChannel(newChannel)
@@ -46,21 +46,22 @@ const Chat = () => {
         })
 
         const getServerData = async () => {
-            await fetchServerData(serverId.id).then(async (serverData) => {
+            await fetchServerData(chatId.id).then(async (serverData) => {
                 if (serverData) {
                     setActiveServer(serverData)
                     dispatch(initializeActiveServer(serverData))
-                    await fetchServerChannels(serverId.id).then(
-                        (channelData) => {
-                            setMiddleBarData(channelData)
-                            setDataType('server')
-                        }
-                    )
+                    await fetchServerChannels(chatId.id).then((channelData) => {
+                        setMiddleBarData(channelData)
+                        setDataType('server')
+                    })
+                } else {
+                    //fetch and initialize middleBarData to dm list here
+                    console.log(serverData)
                 }
             })
         }
         getServerData()
-    }, [user, serverId])
+    }, [user, chatId])
 
     return (
         <div className="flex h-[100vh]">
@@ -78,8 +79,9 @@ const Chat = () => {
                         activeChannel={activeChannel}
                     />
                 </div>
+                {/* use conditional rendering to render 2 different ChatScreens; one for servers and one for dms */}
                 <ChatScreen
-                    serverId={serverId.id}
+                    serverId={chatId.id}
                     activeChannel={activeChannel}
                 />
             </div>

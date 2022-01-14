@@ -52,16 +52,6 @@ const getServers = async (userId) => {
         .collection('servers')
         .where('members', 'array-contains', userId)
         .get()
-    // .then((querySnapshot) => {
-    //     querySnapshot.forEach((doc) => {
-    //         const serverObj = {
-    //             id: doc.id,
-    //             ...doc.data(),
-    //         }
-    //         console.log(serverObj)
-    //         serverData.push(serverObj)
-    //     })
-    // })
 
     const serverData = serverSnapshot.docs.map((serverDoc) => {
         return {
@@ -155,6 +145,21 @@ const leaveServer = async (userId, userEmail, serverId) => {
             })
         console.log('User has been removed')
     }
+}
+
+//------------------------DMS--------------------------------
+const fetchDms = async (userEmail) => {
+    const dmSnapshot = await db
+        .collection('chats')
+        .where('users', 'array-contains', userEmail)
+        .get()
+
+    const dmData = dmSnapshot.docs.map((dmDoc) => {
+        return {
+            ...dmDoc.data(),
+        }
+    })
+    return dmData
 }
 
 //------------------------USERS--------------------------------
@@ -264,4 +269,5 @@ export {
     fetchChannelId,
     editMessage,
     deleteMessage,
+    fetchDms,
 }

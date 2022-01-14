@@ -85,16 +85,23 @@ const MiddleBar = ({
         )
     }
 
-    const createChat = (e) => {
+    const createChat = async (e) => {
         e.preventDefault()
         if (
             EmailValidator.validate(email) &&
             email !== user.email &&
             !checkChatExists(email)
         ) {
-            db.collection('chats').add({
-                users: [user.email, email],
-            })
+            await db
+                .collection('chats')
+                .add({
+                    users: [user.email, email],
+                })
+                .then(async (docRef) => {
+                    await db.collection('chats').doc(docRef.id).update({
+                        chatId: docRef.id,
+                    })
+                })
         }
         setEmail('')
     }

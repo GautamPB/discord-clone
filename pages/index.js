@@ -8,7 +8,8 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDispatch } from 'react-redux'
 import { initializeUser } from '../slices/userSlice'
 import { initializeServers } from '../slices/serverSlice'
-import { getCurrentUser, getServers } from '../utils/Firestore'
+import { initializeDms } from '../slices/dmSlice'
+import { getCurrentUser, getServers, fetchDms } from '../utils/Firestore'
 
 export default function Home() {
     const [user] = useAuthState(auth)
@@ -19,6 +20,10 @@ export default function Home() {
             dispatch(initializeUser(userData))
             await getServers(userData.id).then((serverData) => {
                 dispatch(initializeServers(serverData))
+            })
+
+            await fetchDms(user.email).then((dmData) => {
+                dispatch(initializeDms(dmData))
             })
         })
     }, [user])

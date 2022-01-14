@@ -25,7 +25,7 @@ const MiddleComponent = ({ id, users }) => {
             className="flex items-center space-x-2 group hover:bg-[#36393F] cursor-pointer px-4 py-2 rounded-lg"
             onClick={() => router.push(`/dm/${id}`)}
         >
-            <Avatar src={recipient.photoURL} />
+            <Avatar src={recipient.photoURL ? recipient.photoURL : ''} />
             <p className="text-gray-400 group-hover:text-white cursor-pointer">
                 {recipient.email}
             </p>

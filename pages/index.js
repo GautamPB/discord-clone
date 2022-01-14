@@ -10,6 +10,8 @@ import { initializeUser } from '../slices/userSlice'
 import { initializeServers } from '../slices/serverSlice'
 import { initializeDms } from '../slices/dmSlice'
 import { getCurrentUser, getServers, fetchDms } from '../utils/Firestore'
+import { useSelector } from 'react-redux'
+import { selectDms } from '../slices/dmSlice'
 
 export default function Home() {
     const [user] = useAuthState(auth)
@@ -28,6 +30,8 @@ export default function Home() {
         })
     }, [user])
 
+    const dms = useSelector(selectDms)
+
     return (
         <div>
             <Head>
@@ -42,7 +46,7 @@ export default function Home() {
             {user ? (
                 <div className="flex h-[100vh]">
                     <Sidebar />
-                    <MiddleBar />
+                    <MiddleBar middleBarData={dms} dataType="dms" />
                 </div>
             ) : (
                 <Login />

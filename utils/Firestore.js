@@ -162,6 +162,22 @@ const fetchDms = async (userEmail) => {
     return dmData
 }
 
+const fetchRecipientData = async (recipientEmail) => {
+    const recipientSnapshot = await db
+        .collection('users')
+        .where('email', '==', recipientEmail)
+        .get()
+
+    const recipientData = recipientSnapshot.docs.map((recipientInfo) => {
+        return {
+            id: recipientInfo.id,
+            ...recipientInfo.data(),
+        }
+    })
+
+    return recipientData[0]
+}
+
 //------------------------USERS--------------------------------
 const getCurrentUser = async (email) => {
     const userSnapshot = await db
@@ -270,4 +286,5 @@ export {
     editMessage,
     deleteMessage,
     fetchDms,
+    fetchRecipientData,
 }

@@ -227,28 +227,13 @@ const MiddleBar = ({
                     </div>
 
                     <div className="px-2">
-                        <MiddleComponent
-                            image="https://cdn.britannica.com/54/188754-050-A3613741/Elon-Musk-2010.jpg"
-                            title="Gautam PB"
-                        />
-
-                        <MiddleComponent
-                            image="https://cdn.britannica.com/54/188754-050-A3613741/Elon-Musk-2010.jpg"
-                            title="Roshan Jose"
-                        />
-
-                        <MiddleComponent
-                            image="https://cdn.britannica.com/54/188754-050-A3613741/Elon-Musk-2010.jpg"
-                            title="Nishanth Navada"
-                        />
-
-                        <MiddleComponent
-                            image="https://cdn.britannica.com/54/188754-050-A3613741/Elon-Musk-2010.jpg"
-                            title="Pranav Satyababu"
-                        />
-                        {/* {chatsSnapshot.docs.map((chat) => (
-                    <MiddleComponent key = {chat.id} image = {chat.photoURL} />
-                ))} */}
+                        {middleBarData?.map((chat) => (
+                            <MiddleComponent
+                                key={chat.chatId}
+                                id={chat.chatId}
+                                users={chat.users}
+                            />
+                        ))}
                     </div>
                 </>
             )}

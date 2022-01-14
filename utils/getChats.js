@@ -1,5 +1,5 @@
 const getChats = (users, loggedInUser) => {
-    users?.filter((userToFilter) => userToFilter !== loggedInUser?.email)[0]
+    return users?.filter((userToFilter) => userToFilter !== loggedInUser)[0]
 }
 
-export default getChats()
+export default getChats

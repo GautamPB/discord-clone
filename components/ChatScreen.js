@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux'
 import { selectActiveServer } from '../slices/activeServerSlice'
-import { sendMessage, fetchChannelId } from '../utils/Firestore'
+import { sendMessage, fetchChannelId, sendDmMessage } from '../utils/Firestore'
 import MessagesAreaComponent from './MessagesAreaComponent'
 import { useState, useEffect } from 'react'
 import { selectUser } from '../slices/userSlice'
 
-const ChatScreen = ({ serverId, activeChannel }) => {
+const ChatScreen = ({ serverId, activeChannel, dataType }) => {
     const activeServer = useSelector(selectActiveServer)
 
     const activeUser = useSelector(selectUser)
@@ -16,26 +16,37 @@ const ChatScreen = ({ serverId, activeChannel }) => {
 
     const handleSendMessage = (e) => {
         e.preventDefault()
-        sendMessage(
-            serverId,
-            channelId,
-            message,
-            activeUser.email,
-            activeUser.photoURL
-        )
+        if (dataType === 'server') {
+            sendMessage(
+                serverId,
+                channelId,
+                message,
+                activeUser.email,
+                activeUser.photoURL
+            )
+        } else if (dataType === 'dm') {
+            sendDmMessage(
+                serverId,
+                message,
+                activeUser.email,
+                activeUser.photoURL
+            )
+        }
         setMessage('')
     }
 
     useEffect(() => {
-        fetchChannelId(serverId, activeChannel).then((activeChannelId) => {
-            setChannelId(activeChannelId)
-        })
+        if (dataType === 'server') {
+            fetchChannelId(serverId, activeChannel).then((activeChannelId) => {
+                setChannelId(activeChannelId)
+            })
+        }
     }, [activeChannel])
 
     return (
         <div className="bg-[#36393F] w-full text-white px-2 h-full relative">
             <h1 className="shadow px-2 py-4 z-50 font-semibold">
-                #{activeChannel}
+                {dataType === 'server' ? `#${activeChannel}` : serverId}
             </h1>
 
             <div className="m-0 w-full z-0 h-[88%] flex flex-col px-2 py-4">

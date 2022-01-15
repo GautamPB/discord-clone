@@ -9,9 +9,12 @@ import { fetchDms } from '../../utils/Firestore'
 import { db } from '../../firebase'
 import { useSelector } from 'react-redux'
 import { selectDms } from '../../slices/dmSlice'
+import { selectUser } from '../../slices/userSlice'
 
 const DM = () => {
     const [user] = useAuthState(auth)
+
+    const currentUser = useSelector(selectUser)
 
     const router = useRouter()
 
@@ -28,7 +31,15 @@ const DM = () => {
     return (
         <div className="flex w-full h-screen">
             <Sidebar />
-            <MiddleBar middleBarData={dms} dataType="dms" />
+            <div className="hidden w-[300px] lg:flex lg:h-full">
+                <MiddleBar middleBarData={dms} dataType="dms" />
+            </div>
+
+            <ChatScreen
+                serverId={dmId.id}
+                activeChannel="general"
+                dataType="dm"
+            />
         </div>
     )
 }

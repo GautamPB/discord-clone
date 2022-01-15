@@ -178,6 +178,10 @@ const fetchRecipientData = async (recipientEmail) => {
     return recipientData[0]
 }
 
+const sendDmMessage = async (dmId, message, userEmail, userPhotoURL) => {
+    console.log(dmId, message, userEmail, userPhotoURL)
+}
+
 //------------------------USERS--------------------------------
 const getCurrentUser = async (email) => {
     const userSnapshot = await db
@@ -287,4 +291,5 @@ export {
     deleteMessage,
     fetchDms,
     fetchRecipientData,
+    sendDmMessage,
 }

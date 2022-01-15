@@ -83,6 +83,7 @@ const Chat = () => {
                 <ChatScreen
                     serverId={chatId.id}
                     activeChannel={activeChannel}
+                    dataType="server"
                 />
             </div>
         </div>

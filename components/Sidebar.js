@@ -18,6 +18,8 @@ import {
 } from '../slices/serverSlice'
 import { deactivateDms } from '../slices/dmSlice'
 import ServerImage from './ServerImage'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { db } from '../firebase'
 
 const style = {
     content: {

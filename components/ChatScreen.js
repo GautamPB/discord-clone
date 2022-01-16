@@ -46,7 +46,9 @@ const ChatScreen = ({ serverId, activeChannel, dataType }) => {
     return (
         <div className="bg-[#36393F] w-full text-white px-2 h-full relative">
             <h1 className="shadow px-2 py-4 z-50 font-semibold">
-                {dataType === 'server' ? `#${activeChannel}` : serverId}
+                {dataType === 'server'
+                    ? `#${activeChannel}`
+                    : `@${activeChannel}`}
             </h1>
 
             <div className="m-0 w-full z-0 h-[88%] flex flex-col px-2 py-4">

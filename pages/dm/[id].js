@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Sidebar from '../../components/Sidebar'
 import MiddleBar from '../../components/MiddleBar'
 import ChatScreen from '../../components/ChatScreen'
@@ -9,13 +9,14 @@ import { fetchDms, getServers, getCurrentUser } from '../../utils/Firestore'
 import { db } from '../../firebase'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectDms, initializeDms } from '../../slices/dmSlice'
-import { selectUser, initializeUser } from '../../slices/userSlice'
+import { initializeUser } from '../../slices/userSlice'
 import { initializeServers } from '../../slices/serverSlice'
+import getChats from '../../utils/getChats'
 
 const DM = () => {
     const [user] = useAuthState(auth)
 
-    const currentUser = useSelector(selectUser)
+    const [activeChat, setActiveChat] = useState('')
 
     const dispatch = useDispatch()
 
@@ -37,9 +38,14 @@ const DM = () => {
             await fetchDms(userData.email).then((dmData) => {
                 dispatch(initializeDms(dmData))
             })
+
             await getServers(userData.id).then((serverData) => {
                 dispatch(initializeServers(serverData))
             })
+
+            const chatData = await db.collection('chats').doc(dmId.id).get()
+
+            setActiveChat(getChats(chatData.users, userData.email))
         })
     }, [user, dmId])
 
@@ -52,7 +58,7 @@ const DM = () => {
 
             <ChatScreen
                 serverId={dmId.id}
-                activeChannel="general"
+                activeChannel={activeChat}
                 dataType="dm"
             />
         </div>

@@ -178,8 +178,27 @@ const fetchRecipientData = async (recipientEmail) => {
     return recipientData[0]
 }
 
-const sendDmMessage = async (dmId, message, userEmail, userPhotoURL) => {
-    console.log(dmId, message, userEmail, userPhotoURL)
+const sendDmMessage = async (dmId, message, userEmail, profilePhoto) => {
+    await db
+        .collection('chats')
+        .doc(dmId)
+        .collection('messages')
+        .add({
+            message,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            userEmail,
+            profilePhoto,
+        })
+        .then(async (messageRef) => {
+            await db
+                .collection('chats')
+                .doc(dmId)
+                .collection('messages')
+                .doc(messageRef.id)
+                .update({
+                    messageId: messageRef.id,
+                })
+        })
 }
 
 //------------------------USERS--------------------------------

@@ -25,6 +25,7 @@ const MessagesAreaComponent = ({ serverId, channelId }) => {
                     timestamp={message.timestamp?.toDate().toDateString()}
                     message={message.message}
                     channelId={channelId}
+                    dataType="server"
                 />
             ))}
             {/* <MessageComponent

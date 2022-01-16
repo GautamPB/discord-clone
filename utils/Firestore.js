@@ -201,6 +201,19 @@ const sendDmMessage = async (dmId, message, userEmail, profilePhoto) => {
         })
 }
 
+const editDmMessage = (dmId, messageId, message) => {
+    console.log(dmId, messageId, message)
+}
+
+const deleteDmMessage = async (dmId, messageId) => {
+    await db
+        .collection('chats')
+        .doc(dmId)
+        .collection('messages')
+        .doc(messageId)
+        .delete()
+}
+
 //------------------------USERS--------------------------------
 const getCurrentUser = async (email) => {
     const userSnapshot = await db
@@ -311,4 +324,6 @@ export {
     fetchDms,
     fetchRecipientData,
     sendDmMessage,
+    editDmMessage,
+    deleteDmMessage,
 }

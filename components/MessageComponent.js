@@ -3,7 +3,12 @@ import { DotsHorizontalIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
 import { PencilIcon } from '@heroicons/react/solid'
 import { TrashIcon } from '@heroicons/react/solid'
-import { editMessage, deleteMessage } from '../utils/Firestore'
+import {
+    editMessage,
+    deleteMessage,
+    editDmMessage,
+    deleteDmMessage,
+} from '../utils/Firestore'
 import { useRouter } from 'next/router'
 import Modal from 'react-modal'
 
@@ -29,6 +34,7 @@ const MessageComponent = ({
     timestamp,
     message,
     channelId,
+    dataType,
 }) => {
     const [showOptions, setShowOptions] = useState(false)
 
@@ -63,7 +69,12 @@ const MessageComponent = ({
     const handleConfirmDeleteMessage = (e) => {
         e.preventDefault()
         setOpenModal(false)
-        deleteMessage(serverId.id, channelId, messageId)
+
+        if (dataType === 'server') {
+            deleteMessage(serverId.id, channelId, messageId)
+        } else {
+            deleteDmMessage(serverId.id, messageId)
+        }
     }
 
     return (

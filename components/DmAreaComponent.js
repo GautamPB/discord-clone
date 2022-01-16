@@ -23,6 +23,7 @@ const DmAreaComponent = ({ chatId, channelId }) => {
                     timestamp={message.timestamp?.toDate().toDateString()}
                     message={message.message}
                     channelId={channelId}
+                    dataType="dm"
                 />
             ))}
         </div>

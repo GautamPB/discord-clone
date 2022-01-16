@@ -1,20 +1,23 @@
+import { useEffect } from 'react'
 import Sidebar from '../../components/Sidebar'
 import MiddleBar from '../../components/MiddleBar'
 import ChatScreen from '../../components/ChatScreen'
 import { auth } from '../../firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useRouter } from 'next/router'
-import { fetchDms } from '../../utils/Firestore'
+import { fetchDms, getServers, getCurrentUser } from '../../utils/Firestore'
 import { db } from '../../firebase'
-import { useSelector } from 'react-redux'
-import { selectDms } from '../../slices/dmSlice'
-import { selectUser } from '../../slices/userSlice'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectDms, initializeDms } from '../../slices/dmSlice'
+import { selectUser, initializeUser } from '../../slices/userSlice'
+import { initializeServers } from '../../slices/serverSlice'
 
 const DM = () => {
     const [user] = useAuthState(auth)
 
     const currentUser = useSelector(selectUser)
+
+    const dispatch = useDispatch()
 
     const router = useRouter()
 
@@ -27,6 +30,18 @@ const DM = () => {
         .where('users', 'array-contains', user.email)
 
     // const [chats] = useCollectionData(query, { idField: 'id' })
+
+    useEffect(() => {
+        getCurrentUser(user.email).then(async (userData) => {
+            dispatch(initializeUser(userData))
+            await fetchDms(userData.email).then((dmData) => {
+                dispatch(initializeDms(dmData))
+            })
+            await getServers(userData.id).then((serverData) => {
+                dispatch(initializeServers(serverData))
+            })
+        })
+    }, [user, dmId])
 
     return (
         <div className="flex w-full h-screen">

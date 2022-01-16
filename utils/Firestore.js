@@ -201,8 +201,15 @@ const sendDmMessage = async (dmId, message, userEmail, profilePhoto) => {
         })
 }
 
-const editDmMessage = (dmId, messageId, message) => {
-    console.log(dmId, messageId, message)
+const editDmMessage = async (dmId, messageId, message) => {
+    await db
+        .collection('chats')
+        .doc(dmId)
+        .collection('messages')
+        .doc(messageId)
+        .update({
+            message: message,
+        })
 }
 
 const deleteDmMessage = async (dmId, messageId) => {

@@ -56,7 +56,12 @@ const MessageComponent = ({
 
     const handleConfirmEditMessage = (e) => {
         setIsEditing(false)
-        editMessage(serverId.id, channelId, messageId, newMessage)
+
+        if (dataType === 'server') {
+            editMessage(serverId.id, channelId, messageId, newMessage)
+        } else {
+            editDmMessage(serverId.id, messageId, newMessage)
+        }
         setNewMessage('')
     }
 

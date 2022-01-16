@@ -4,6 +4,7 @@ import { sendMessage, fetchChannelId, sendDmMessage } from '../utils/Firestore'
 import MessagesAreaComponent from './MessagesAreaComponent'
 import { useState, useEffect } from 'react'
 import { selectUser } from '../slices/userSlice'
+import DmAreaComponent from './DmAreaComponent'
 
 const ChatScreen = ({ serverId, activeChannel, dataType }) => {
     const activeServer = useSelector(selectActiveServer)
@@ -52,13 +53,13 @@ const ChatScreen = ({ serverId, activeChannel, dataType }) => {
             </h1>
 
             <div className="m-0 w-full z-0 h-[88%] flex flex-col px-2 py-4">
-                {serverId && channelId ? (
+                {serverId && channelId && dataType === 'server' ? (
                     <MessagesAreaComponent
                         serverId={activeServer.serverId}
                         channelId={channelId}
                     />
                 ) : (
-                    <></>
+                    <DmAreaComponent chatId={serverId} channelId="" />
                 )}
             </div>
 

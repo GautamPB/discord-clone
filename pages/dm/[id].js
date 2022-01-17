@@ -12,6 +12,7 @@ import { selectDms, initializeDms } from '../../slices/dmSlice'
 import { initializeUser } from '../../slices/userSlice'
 import { initializeServers } from '../../slices/serverSlice'
 import getChats from '../../utils/getChats'
+import Head from 'next/head'
 
 const DM = () => {
     const [user] = useAuthState(auth)
@@ -45,12 +46,16 @@ const DM = () => {
 
             const chatData = await db.collection('chats').doc(dmId.id).get()
 
-            setActiveChat(getChats(chatData.users, userData.email))
+            setActiveChat(getChats(chatData.data().users, userData.email))
         })
     }, [user, dmId])
 
     return (
         <div className="flex w-full h-screen">
+            <Head>
+                <title>Discord - {activeChat}</title>
+            </Head>
+
             <Sidebar />
             <div className="hidden w-[300px] lg:flex lg:h-full">
                 <MiddleBar middleBarData={dms} dataType="dms" />

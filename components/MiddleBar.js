@@ -212,8 +212,9 @@ const MiddleBar = ({
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Start a conversation"
-                                className="bg-[#202225] rounded-lg px-2 py-1 text-sm w-full text-white"
+                                className="bg-[#202225] rounded-lg px-2 py-1 text-sm w-full text-white mt-3"
                             />
+
                             <button
                                 onClick={createChat}
                                 type="submit"

@@ -1,6 +1,7 @@
 import { Avatar } from '@material-ui/core'
 import { PlusIcon } from '@heroicons/react/outline'
 import { IconButton } from '@material-ui/core'
+import { HomeIcon } from '@heroicons/react/solid'
 import ExploreIcon from '@material-ui/icons/Explore'
 import { auth } from '../firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -11,15 +12,9 @@ import { useSelector } from 'react-redux'
 import { selectUser } from '../slices/userSlice'
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
-import {
-    deactivateServers,
-    selectServers,
-    addServer,
-} from '../slices/serverSlice'
+import { deactivateServers, selectServers } from '../slices/serverSlice'
 import { deactivateDms } from '../slices/dmSlice'
 import ServerImage from './ServerImage'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { db } from '../firebase'
 
 const style = {
     content: {
@@ -102,6 +97,14 @@ const Sidebar = () => {
                 <IconButton className="bg-gray-500 rounded-full items-center group">
                     <div className="bg-[#202225] group-hover:bg-white w-1.5 h-8 rounded-lg absolute left-[-10px]" />
                     <ExploreIcon className="text-green-500 h-8" />
+                </IconButton>
+
+                <IconButton
+                    className="bg-gray-500 rounded-full items-center group"
+                    onClick={() => router.push('/')}
+                >
+                    <div className="bg-[#202225] group-hover:bg-white w-1.5 h-8 rounded-lg absolute left-[-10px]" />
+                    <HomeIcon className="text-green-500 h-6" />
                 </IconButton>
             </div>
 

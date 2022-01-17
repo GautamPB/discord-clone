@@ -45,7 +45,7 @@ const ChatScreen = ({ serverId, activeChannel, dataType }) => {
     }, [activeChannel])
 
     return (
-        <div className="bg-[#36393F] w-full text-white px-2 h-full relative">
+        <div className="bg-[#36393F] w-full text-white px-2 h-full relative overflow-hidden">
             <h1 className="shadow px-2 py-4 z-50 font-semibold">
                 {dataType === 'server'
                     ? `#${activeChannel}`
@@ -64,7 +64,7 @@ const ChatScreen = ({ serverId, activeChannel, dataType }) => {
             </div>
 
             <form
-                className="w-[99%] bottom-2 bg-[#36393F] z-50 mx-4"
+                className="w-[95%] bottom-2 bg-[#36393F] z-50 mx-4 absolute"
                 onSubmit={handleSendMessage}
             >
                 <input

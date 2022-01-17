@@ -17,6 +17,13 @@ export default function Home() {
     const [user] = useAuthState(auth)
     const dispatch = useDispatch()
 
+    const [hideMiddleBar, setHideMiddleBar] = useState(false)
+
+    const handleSetHideMiddlebar = (newMiddleBarValue) => {
+        console.log(newMiddleBarValue)
+        return
+    }
+
     useEffect(() => {
         getCurrentUser(user.email).then(async (userData) => {
             dispatch(initializeUser(userData))
@@ -45,7 +52,10 @@ export default function Home() {
 
             {user ? (
                 <div className="flex h-[100vh]">
-                    <Sidebar />
+                    <Sidebar
+                        hideMiddleBar={hideMiddleBar}
+                        setHideMiddleBar={handleSetHideMiddlebar}
+                    />
                     <MiddleBar middleBarData={dms} dataType="dms" />
                 </div>
             ) : (

@@ -19,6 +19,8 @@ const DM = () => {
 
     const [activeChat, setActiveChat] = useState('')
 
+    const [hideMiddleBar, setHideMiddleBar] = useState(false)
+
     const dispatch = useDispatch()
 
     const router = useRouter()
@@ -26,12 +28,6 @@ const DM = () => {
     const dmId = router.query
 
     const dms = useSelector(selectDms)
-
-    const query = db
-        .collection('chats')
-        .where('users', 'array-contains', user.email)
-
-    // const [chats] = useCollectionData(query, { idField: 'id' })
 
     useEffect(() => {
         getCurrentUser(user.email).then(async (userData) => {
@@ -58,7 +54,11 @@ const DM = () => {
 
             <Sidebar />
             <div className="hidden w-[300px] lg:flex lg:h-full">
-                <MiddleBar middleBarData={dms} dataType="dms" />
+                <MiddleBar
+                    middleBarData={dms}
+                    dataType="dms"
+                    hideMiddleBar={hideMiddleBar}
+                />
             </div>
 
             <ChatScreen

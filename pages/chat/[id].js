@@ -70,6 +70,7 @@ const Chat = () => {
             </Head>
 
             <Sidebar />
+
             <div className="flex items-center w-full h-full">
                 <div className="hidden w-[300px] lg:flex lg:h-full">
                     <MiddleBar

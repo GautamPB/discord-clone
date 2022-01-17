@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { deactivateServers, selectServers } from '../slices/serverSlice'
 import { deactivateDms } from '../slices/dmSlice'
 import ServerImage from './ServerImage'
+import { DotsCircleHorizontalIcon } from '@heroicons/react/solid'
 
 const style = {
     content: {

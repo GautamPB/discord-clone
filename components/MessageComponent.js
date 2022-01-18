@@ -11,6 +11,8 @@ import {
 } from '../utils/Firestore'
 import { useRouter } from 'next/router'
 import Modal from 'react-modal'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { auth } from '../firebase'
 
 const style = {
     content: {
@@ -47,6 +49,8 @@ const MessageComponent = ({
     const router = useRouter()
 
     const serverId = router.query
+
+    const [user] = useAuthState(auth)
 
     const handleEditMessage = (e) => {
         e.preventDefault()
@@ -116,10 +120,14 @@ const MessageComponent = ({
                 </div>
             </div>
 
-            <DotsHorizontalIcon
-                className="h-6 cursor-pointer mr-2"
-                onClick={() => setShowOptions(!showOptions)}
-            />
+            {user.email === userEmail ? (
+                <DotsHorizontalIcon
+                    className="h-6 cursor-pointer mr-2"
+                    onClick={() => setShowOptions(!showOptions)}
+                />
+            ) : (
+                <></>
+            )}
 
             {showOptions ? (
                 <div className="absolute right-2 top-8 p-3 rounded-md w-[175px] space-y-2 bg-[#18191C] z-50">
